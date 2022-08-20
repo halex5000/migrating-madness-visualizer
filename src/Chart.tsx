@@ -3,66 +3,46 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  ResponsiveContainer,
   AreaChart,
   Area,
+  Legend,
 } from "recharts";
-const data = [
-  { name: "Page A", uv: 100, pv: 3000, amt: 1500 },
-  { name: "Page B", uv: 200, pv: 2300, amt: 1300 },
-  { name: "Page C", uv: 100, pv: 3000, amt: 1500 },
-  { name: "Page D", uv: 400, pv: 2100, amt: 1300 },
-  { name: "Page E", uv: 100, pv: 3000, amt: 1500 },
-  { name: "Page F", uv: 600, pv: 1900, amt: 1300 },
-  { name: "Page G", uv: 100, pv: 3000, amt: 1500 },
-  { name: "Page H", uv: 1200, pv: 1700, amt: 1300 },
-];
 
-export default () => (
+export default ({usageData}: {usageData: UsageData[]}) => (
     <AreaChart
-      width={800}
-      height={500}
-      data={data}
+      width={1200}
+      height={600}
+      data={usageData}
       stackOffset="wiggle"
       margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
     >
+      <Legend verticalAlign="top" height={36}/>
       <defs>
-        <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="versionOne" x1="0" y1="0" x2="0" y2="1">
           <stop offset="5%" stopColor="#405BFF" stopOpacity={0.8} />
           <stop offset="95%" stopColor="#405BFF" stopOpacity={0} />
         </linearGradient>
-        <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="versionTwo" x1="0" y1="0" x2="0" y2="1">
           <stop offset="5%" stopColor="#FF386B" stopOpacity={0.8} />
           <stop offset="95%" stopColor="#FF386B" stopOpacity={0} />
-        </linearGradient>
-        <linearGradient id="colorAmt" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#A34FD3" stopOpacity={0.8} />
-          <stop offset="95%" stopColor="#A34FD3" stopOpacity={0} />
         </linearGradient>
       </defs>
       <Area
         type="monotone"
-        dataKey="uv"
+        dataKey="versionOne"
         stroke="#405BFF"
         fillOpacity={1}
-        fill="url(#colorUv)"
+        fill="url(#versionOneCallCount)"
       />
       <Area
         type="monotone"
-        dataKey="pv"
+        dataKey="versionTwo"
         stroke="#82ca9d"
         fillOpacity={1}
-        fill="url(#colorPv)"
-      />
-      <Area
-        type="monotone"
-        dataKey="amt"
-        stroke="#A34FD3"
-        fillOpacity={1}
-        fill="url(#colorAmt)"
+        fill="url(#versionTwoCallCount)"
       />
       <CartesianGrid stroke="#e6e6e6" strokeDasharray="5 5" />
-      <XAxis dataKey="name" />
+      <XAxis dataKey="time" name="Time" tickFormatter={(time) => new Date(time).toLocaleString()} />
       <YAxis label="rate" />
       <Tooltip />
     </AreaChart>

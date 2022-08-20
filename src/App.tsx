@@ -3,27 +3,35 @@ import { Container, Grid } from "@mui/material";
 import Chart from "./Chart";
 import Code from "./Code";
 import Connection from "./Connection";
+import { useState } from "react";
 
 function App() {
+  const [usageData, setUsageData] = useState<UsageData[]>([
+    { time: 1661030992467, versionOne: 1, versionTwo: 0 },
+    { time: 1661030997472, versionOne: 9, versionTwo: 0 },
+    { time: 1661031285950, versionOne: 0, versionTwo: 7 },
+    { time: 1661031290953, versionOne: 1, versionTwo: 0 },
+    { time: 1661031524647, versionOne: 2, versionTwo: 2 },
+    { time: 1661031529658, versionOne: 2, versionTwo: 3 },
+    { time: 1661031534658, versionOne: 5, versionTwo: 1 },
+  ]);
+
   return (
     <Container>
-      <Connection />
+      <Connection setUsageData={setUsageData} />
+      <Grid>
+        <Chart usageData={usageData} />
+      </Grid>
       <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
+        sx={{
+          display: {
+            xs: "none",
+            lg: "block",
+            xl: "block",
+          },
+        }}
       >
-        <Grid
-          item
-          xl={3}
-          lg={3}
-          sx={{ display: { xs: "none", md: "none", lg: "block", xl: "block" } }}
-        >
-          <Code />
-        </Grid>
-        <Grid item xl={9} lg={9}>
-          <Chart />
-        </Grid>
+        <Code />
       </Grid>
     </Container>
   );

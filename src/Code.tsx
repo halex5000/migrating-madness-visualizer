@@ -1,5 +1,14 @@
-import { Box, Paper, Grid, styled, Stack } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Grid,
+  styled,
+  Stack,
+  AppBar,
+  Toolbar,
+} from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
+import Draggable from "react-draggable";
 
 const QRCode = () => (
   <QRCodeSVG
@@ -29,20 +38,9 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default () => (
-  <Grid container>
-    <Grid item>
-      <Stack spacing={2}>
-        <Box bgcolor="#e6e6e6">
-          <Item elevation={24}>
-            <QRCode />
-          </Item>
-        </Box>
-        <Box bgcolor={"#282828"}>
-          <Item elevation={24}>
-            <h1>Scan me!</h1>
-          </Item>
-        </Box>
-      </Stack>
-    </Grid>
-  </Grid>
+  <Draggable>
+    <div>
+      <QRCode />
+    </div>
+  </Draggable>
 );

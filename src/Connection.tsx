@@ -17,15 +17,11 @@ import {
   NetworkCheck,
 } from "@mui/icons-material";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+const usageData: UsageData[] = [];
 
-export default function BasicTimeline() {
+export default function BasicTimeline({setUsageData}: {
+  setUsageData: Function;
+}) {
   const [socketUrl] = useState(import.meta.env.VITE_SOCKET_URL);
   const [readyStates] = useState([-1]);
   const [messageHistory, setMessageHistory] = useState<any[]>([]);
@@ -43,6 +39,24 @@ export default function BasicTimeline() {
       readyStates.push(readyState);
     }
   }, [readyState]);
+
+  useEffect(() => {
+    if (lastMessage && lastMessage.data) {
+      const { versionOneCallCount: versionOne, versionTwoCallCount: versionTwo, time } = JSON.parse(
+        lastMessage?.data
+      );
+      console.log("message received", {
+        versionOne,
+        versionTwo,
+        time,
+      });
+
+      setUsageData([
+        {time, versionOne, versionTwo},
+        ...usageData,
+      ]);
+    }
+  }, [lastMessage]);
 
   const statusMap = {
     [ReadyState.CONNECTING]: {
@@ -80,7 +94,7 @@ export default function BasicTimeline() {
     <>
       <AppBar
         color="primary"
-        sx={{ display: { xs: "none", lg: "block", xl: "block" } }}
+        sx={{ display: { xs: "none", lg: "block", xl: "block", backgroundColor: "#282828" } }}
       >
         <Container>
           <Toolbar>
@@ -109,7 +123,7 @@ export default function BasicTimeline() {
           color="secondary"
           sx={{ display: { xs: "block", md: "block", lg: "none", xl: "none" } }}
         >
-              Successfully Connected
+          Successfully Connected
         </AppBar>
       ) : null}
     </>
