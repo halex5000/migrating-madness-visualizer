@@ -19,9 +19,11 @@ const data = [
 ];
 
 export default () => (
-  <ResponsiveContainer height="90%">
     <AreaChart
+      width={800}
+      height={500}
       data={data}
+      stackOffset="wiggle"
       margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
     >
       <defs>
@@ -64,5 +66,4 @@ export default () => (
       <YAxis label="rate" />
       <Tooltip />
     </AreaChart>
-  </ResponsiveContainer>
 );

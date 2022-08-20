@@ -77,28 +77,41 @@ export default function BasicTimeline() {
   const connectionStatus = statusMap[readyState];
 
   return (
-    <AppBar color="primary">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {readyStates.map((state: ReadyState, index) => {
-              const { label, icon, color } = statusMap[state];
-              return (
-                <div>
-                  <Chip icon={icon} color={color} label={label} key={index} />
-                </div>
-              );
-            })}
-            {connectionStatus === statusMap[1] ? (
-              <Chip
-                icon={statusMap[1].icon}
-                color={statusMap[1].color}
-                label={statusMap[1].label}
-              />
-            ) : null}
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+    <>
+      <AppBar
+        color="primary"
+        sx={{ display: { xs: "none", lg: "block", xl: "block" } }}
+      >
+        <Container>
+          <Toolbar>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {readyStates.map((state: ReadyState, index) => {
+                const { label, icon, color } = statusMap[state];
+                return (
+                  <div>
+                    <Chip icon={icon} color={color} label={label} key={index} />
+                  </div>
+                );
+              })}
+              {connectionStatus === statusMap[1] ? (
+                <Chip
+                  icon={statusMap[1].icon}
+                  color={statusMap[1].color}
+                  label={statusMap[1].label}
+                />
+              ) : null}
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      {connectionStatus === statusMap[1] ? (
+        <AppBar
+          color="secondary"
+          sx={{ display: { xs: "block", md: "block", lg: "none", xl: "none" } }}
+        >
+              Successfully Connected
+        </AppBar>
+      ) : null}
+    </>
   );
 }

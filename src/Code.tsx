@@ -37,7 +37,7 @@ export default () => (
             <QRCode />
           </Item>
         </Box>
-        <Box>
+        <Box bgcolor={"#282828"}>
           <Item elevation={24}>
             <h1>Scan me!</h1>
           </Item>
