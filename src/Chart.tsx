@@ -1,6 +1,4 @@
 import {
-  LineChart,
-  Line,
   CartesianGrid,
   XAxis,
   YAxis,
@@ -21,10 +19,8 @@ const data = [
 ];
 
 export default () => (
-  <ResponsiveContainer width={700} height="80%">
+  <ResponsiveContainer height="90%">
     <AreaChart
-      width={800}
-      height={500}
       data={data}
       margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
     >
