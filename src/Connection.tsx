@@ -19,8 +19,9 @@ import {
 
 const usageData: UsageData[] = [];
 
-export default function BasicTimeline({setUsageData}: {
+export default function BasicTimeline({setUsageData, usageData}: {
   setUsageData: Function;
+  usageData: UsageData[];
 }) {
   const [socketUrl] = useState(import.meta.env.VITE_SOCKET_URL);
   const [readyStates] = useState([-1]);

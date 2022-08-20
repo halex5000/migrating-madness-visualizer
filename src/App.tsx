@@ -18,7 +18,7 @@ function App() {
 
   return (
     <Container>
-      <Connection setUsageData={setUsageData} />
+      <Connection setUsageData={setUsageData} usageData={usageData} />
       <Grid>
         <Chart usageData={usageData} />
       </Grid>
