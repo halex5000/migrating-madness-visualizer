@@ -47,30 +47,32 @@ export default function BasicTimeline() {
   const statusMap = {
     [ReadyState.CONNECTING]: {
       label: "Connecting",
-      color: "info",
+      color: "info" as Color,
       icon: <NetworkCheck />,
     },
     [ReadyState.OPEN]: {
       label: "Successfully Connected!",
-      color: "success",
+      color: "success" as Color,
       icon: <CloudDone />,
     },
     [ReadyState.CLOSING]: {
       label: "Closing",
-      color: "info",
+      color: "info" as Color,
       icon: <CheckCircle />,
     },
     [ReadyState.CLOSED]: {
       label: "Closed",
-      color: "info",
+      color: "info" as Color,
       icon: <CheckCircle />,
     },
     [ReadyState.UNINSTANTIATED]: {
       label: "Instantiating",
-      color: "secondary",
+      color: "secondary" as Color,
       icon: <HourglassTop />,
     },
   };
+
+  type Color = "primary" | "secondary" | "info";
 
   const connectionStatus = statusMap[readyState];
 
@@ -78,7 +80,7 @@ export default function BasicTimeline() {
     <AppBar color="primary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }}}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {readyStates.map((state: ReadyState, index) => {
               const { label, icon, color } = statusMap[state];
               return (
