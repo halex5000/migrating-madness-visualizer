@@ -1,9 +1,9 @@
 import "./App.css";
 import { Container, Grid } from "@mui/material";
 import Chart from "./Chart";
-import Code from "./Code";
 import Connection from "./Connection";
 import { useState } from "react";
+import Code from "./Code";
 
 function App() {
   const [usageData, setUsageData] = useState<UsageData[]>([
@@ -17,23 +17,15 @@ function App() {
   ]);
 
   return (
-    <Container>
-      <Connection setUsageData={setUsageData} usageData={usageData} />
-      <Grid>
-        <Chart usageData={usageData} />
-      </Grid>
-      <Grid
-        sx={{
-          display: {
-            xs: "none",
-            lg: "block",
-            xl: "block",
-          },
-        }}
-      >
-        <Code />
-      </Grid>
-    </Container>
+    <>
+    <Code />
+      <Container>
+        <Connection setUsageData={setUsageData} usageData={usageData} />
+        <Grid>
+          <Chart usageData={usageData} />
+        </Grid>
+      </Container>
+    </>
   );
 }
 

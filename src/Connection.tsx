@@ -1,31 +1,20 @@
 import { useState, useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import {
-  Chip,
-  Box,
-  AppBar,
-  Paper,
-  styled,
-  Container,
-  Toolbar,
-} from "@mui/material";
+import { useSnackbar } from "notistack";
+import { IconButton } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 
-import {
-  CheckCircle,
-  CloudDone,
-  HourglassTop,
-  NetworkCheck,
-} from "@mui/icons-material";
-
-const usageData: UsageData[] = [];
-
-export default function BasicTimeline({setUsageData, usageData}: {
+export default function BasicTimeline({
+  setUsageData,
+  usageData,
+}: {
   setUsageData: Function;
   usageData: UsageData[];
 }) {
   const [socketUrl] = useState(import.meta.env.VITE_SOCKET_URL);
   const [readyStates] = useState([-1]);
   const [messageHistory, setMessageHistory] = useState<any[]>([]);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const { lastMessage, readyState } = useWebSocket(socketUrl);
 
@@ -35,98 +24,88 @@ export default function BasicTimeline({setUsageData, usageData}: {
     }
   }, [lastMessage, setMessageHistory]);
 
+  const Action = ({ snackbarId }: { snackbarId: string }) => {
+    return (
+      <IconButton
+        aria-label="delete"
+        onClick={() => {
+          console.log("click trashcan");
+          closeSnackbar(snackbarId);
+        }}
+      >
+        <Delete />
+      </IconButton>
+    );
+  };
+
   useEffect(() => {
     if (!readyStates.includes(readyState)) {
+      console.log(readyState);
       readyStates.push(readyState);
+      switch (readyState) {
+        case ReadyState.OPEN:
+          enqueueSnackbar("Connection successful", {
+            variant: "success",
+            persist: true,
+            key: "success",
+            action: <Action snackbarId="success" />,
+          });
+          break;
+        case ReadyState.UNINSTANTIATED:
+          enqueueSnackbar("Initializing", {
+            variant: "info",
+            persist: true,
+            key: "initializing",
+            action: <Action snackbarId="initializing" />,
+          });
+          break;
+        case ReadyState.CONNECTING:
+          enqueueSnackbar("Connecting", {
+            variant: "info",
+            persist: true,
+            key: "connecting",
+            action: <Action snackbarId="connecting" />,
+          });
+          break;
+        case ReadyState.CLOSING:
+          enqueueSnackbar("Closing", {
+            variant: "warning",
+            persist: true,
+            key: "closing",
+            action: <Action snackbarId="closing" />,
+          });
+          break;
+        case ReadyState.CLOSED:
+          enqueueSnackbar("Closed", {
+            variant: "error",
+            persist: true,
+            key: "closed",
+            action: <Action snackbarId="closed" />,
+          });
+          break;
+        default:
+          break;
+      }
     }
   }, [readyState]);
 
   useEffect(() => {
     if (lastMessage && lastMessage.data) {
-      const { versionOneCallCount: versionOne, versionTwoCallCount: versionTwo, time } = JSON.parse(
-        lastMessage?.data
-      );
+      const {
+        versionOneCallCount: versionOne,
+        versionTwoCallCount: versionTwo,
+        time,
+      } = JSON.parse(lastMessage?.data);
+
       console.log("message received", {
         versionOne,
         versionTwo,
         time,
       });
 
-      setUsageData([
-        {time, versionOne, versionTwo},
-        ...usageData,
-      ]);
+      setUsageData([{ time, versionOne, versionTwo }, ...usageData]);
     }
   }, [lastMessage]);
 
-  const statusMap = {
-    [ReadyState.CONNECTING]: {
-      label: "Connecting",
-      color: "info" as Color,
-      icon: <NetworkCheck />,
-    },
-    [ReadyState.OPEN]: {
-      label: "Successfully Connected!",
-      color: "success" as Color,
-      icon: <CloudDone />,
-    },
-    [ReadyState.CLOSING]: {
-      label: "Closing",
-      color: "info" as Color,
-      icon: <CheckCircle />,
-    },
-    [ReadyState.CLOSED]: {
-      label: "Closed",
-      color: "info" as Color,
-      icon: <CheckCircle />,
-    },
-    [ReadyState.UNINSTANTIATED]: {
-      label: "Instantiating",
-      color: "secondary" as Color,
-      icon: <HourglassTop />,
-    },
-  };
-
-  type Color = "primary" | "secondary" | "info";
-
-  const connectionStatus = statusMap[readyState];
-
-  return (
-    <>
-      <AppBar
-        color="primary"
-        sx={{ display: { xs: "none", lg: "block", xl: "block", backgroundColor: "#282828" } }}
-      >
-        <Container>
-          <Toolbar>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {readyStates.map((state: ReadyState, index) => {
-                const { label, icon, color } = statusMap[state];
-                return (
-                  <div>
-                    <Chip icon={icon} color={color} label={label} key={index} />
-                  </div>
-                );
-              })}
-              {connectionStatus === statusMap[1] ? (
-                <Chip
-                  icon={statusMap[1].icon}
-                  color={statusMap[1].color}
-                  label={statusMap[1].label}
-                />
-              ) : null}
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-      {connectionStatus === statusMap[1] ? (
-        <AppBar
-          color="secondary"
-          sx={{ display: { xs: "block", md: "block", lg: "none", xl: "none" } }}
-        >
-          Successfully Connected
-        </AppBar>
-      ) : null}
-    </>
-  );
+  return <></>;
 }
