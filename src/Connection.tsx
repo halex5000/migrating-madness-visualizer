@@ -4,6 +4,8 @@ import { useSnackbar } from "notistack";
 import { IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 
+let firstData = true;
+
 export default function BasicTimeline({
   setUsageData,
   usageData,
@@ -103,7 +105,12 @@ export default function BasicTimeline({
         time,
       });
 
-      setUsageData([...usageData, { time, versionOne, versionTwo }]);
+      if (firstData) {
+        firstData = false;
+        setUsageData([{ time, versionOne, versionTwo }]);
+      } else {
+        setUsageData([...usageData, { time, versionOne, versionTwo }]);
+      }
     }
   }, [lastMessage]);
 
