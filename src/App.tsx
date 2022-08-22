@@ -1,5 +1,18 @@
 import "./App.css";
-import { Container, Grid } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Container,
+  Drawer,
+  Grid,
+  IconButton,
+  Toolbar,
+} from "@mui/material";
+import { Menu } from "@mui/icons-material";
 import Chart from "./Chart";
 import Connection from "./Connection";
 import { useState } from "react";
@@ -18,12 +31,27 @@ function App() {
 
   return (
     <>
-    <Code />
-      <Container>
+      <Container maxWidth="xl">
         <Connection setUsageData={setUsageData} usageData={usageData} />
-        <Grid>
-          <Chart usageData={usageData} />
+        <Grid container>
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Card variant="outlined" raised={true}>
+              <CardHeader title="Timeseries data of API usage rate by version" />
+              <CardMedia>
+                <Chart usageData={usageData} />
+              </CardMedia>
+              <CardContent>
+                <h2>Time</h2>
+              </CardContent>
+            </Card>
+          </Box>
         </Grid>
+        <Code />
       </Container>
     </>
   );

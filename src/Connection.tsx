@@ -103,7 +103,7 @@ export default function BasicTimeline({
         time,
       });
 
-      setUsageData([{ time, versionOne, versionTwo }, ...usageData]);
+      setUsageData([...usageData, { time, versionOne, versionTwo }]);
     }
   }, [lastMessage]);
 

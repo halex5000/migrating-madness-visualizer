@@ -13,6 +13,7 @@ const QRCode = () => {
             width: 256,
             height: 256,
             position: "relative",
+            zIndex: 'modal'
           }}
         >
           <Stack>
