@@ -6,6 +6,11 @@ import { Delete } from "@mui/icons-material";
 
 let firstData = true;
 
+let average = 0;
+let sum = 0;
+let versionOneSum = 0;
+let versionTwoSum = 0;
+
 export default function BasicTimeline({
   setUsageData,
   usageData,
@@ -105,11 +110,17 @@ export default function BasicTimeline({
         time,
       });
 
+      versionOneSum += versionOne;
+      versionTwoSum += versionTwo;
+      sum = versionOneSum + versionTwoSum;
+      const versionOneAverage = versionOneSum / sum;
+      const versionTwoAverage = versionTwoSum / sum;
+
       if (firstData) {
         firstData = false;
-        setUsageData([{ time, versionOne, versionTwo }]);
+        setUsageData([{ time, versionOne, versionTwo, versionOneAverage, versionTwoAverage }]);
       } else {
-        setUsageData([...usageData, { time, versionOne, versionTwo }]);
+        setUsageData([...usageData, { time, versionOne, versionTwo, versionOneAverage, versionTwoAverage }]);
       }
     }
   }, [lastMessage]);

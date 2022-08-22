@@ -3,22 +3,29 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  AreaChart,
   Area,
   Legend,
+  ComposedChart,
+  Line,
 } from "recharts";
 
 const parseTime = (date: number) => {
+  const time = new Date(date);
+  const minutes = time.getMinutes();
+  return `${time.getHours()}:${minutes < 10 ? '0' : minutes}:${time.getSeconds()}`;
+};
+
+const tickFormatter = (date: number) => {
   const time = new Date(date);
   return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
 };
 
 export default ({ usageData }: { usageData: UsageData[] }) => (
-  <AreaChart
+  <ComposedChart
     width={1100}
     height={700}
     data={usageData}
-    stackOffset="wiggle"
+    stackOffset="expand"
     margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
     
   >
@@ -28,37 +35,29 @@ export default ({ usageData }: { usageData: UsageData[] }) => (
       align="right"
       layout="vertical"
     />
-    <defs>
-      <linearGradient id="versionOne" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="5%" stopColor="#405BFF" stopOpacity={0.8} />
-        <stop offset="95%" stopColor="#405BFF" stopOpacity={0} />
-      </linearGradient>
-      <linearGradient id="versionTwo" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="5%" stopColor="#FF386B" stopOpacity={0.8} />
-        <stop offset="95%" stopColor="#FF386B" stopOpacity={0} />
-      </linearGradient>
-    </defs>
     <Area
       type="monotone"
+      stackId="1"
       dataKey="versionOne"
       stroke="#405BFF"
       strokeWidth={2}
-      fillOpacity={1}
-      fill="url(#versionOne)"
+      fill="#405BFF"
     />
     <Area
       type="monotone"
+      stackId="1"
       dataKey="versionTwo"
       strokeWidth={2}
       stroke="#FF386B"
-      fillOpacity={11}
-      fill="url(#versionTwo)"
+      fill="#FF386B"
     />
+    <Line type="monotone" dataKey="versionOneAverage" stroke="#A34FDE"  strokeWidth={2}/>
+    <Line type="monotone" dataKey="versionTwoAverage" stroke="#3DD6F5"  strokeWidth={2}/>
     <CartesianGrid stroke="#e6e6e6" strokeDasharray="5 5" />
-    <XAxis dataKey="time" name="Time" tickFormatter={parseTime}>
+    <XAxis dataKey="time" name="Time" tickFormatter={tickFormatter}>
     </XAxis>
     <YAxis>
     </YAxis>
-    <Tooltip labelFormatter={parseTime} />
-  </AreaChart>
+    <Tooltip labelFormatter={tickFormatter} />
+  </ComposedChart>
 );
