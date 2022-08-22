@@ -33,7 +33,7 @@ const QRCode = () => {
                 level={"H"}
                 includeMargin={true}
                 imageSettings={{
-                  src: "./src/assets/Osmo-Black-Transparent.png",
+                  src: "./Osmo-Black-Transparent.png",
                   x: undefined,
                   y: undefined,
                   height: 48,
