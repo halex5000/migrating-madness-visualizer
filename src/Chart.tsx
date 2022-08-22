@@ -6,7 +6,6 @@ import {
   AreaChart,
   Area,
   Legend,
-  Label,
 } from "recharts";
 
 const parseTime = (date: number) => {
@@ -46,7 +45,6 @@ export default ({ usageData }: { usageData: UsageData[] }) => (
       strokeWidth={2}
       fillOpacity={1}
       fill="url(#versionOne)"
-      dot={true}
     />
     <Area
       type="monotone"
@@ -55,13 +53,12 @@ export default ({ usageData }: { usageData: UsageData[] }) => (
       stroke="#FF386B"
       fillOpacity={11}
       fill="url(#versionTwo)"
-      dot={true}
     />
     <CartesianGrid stroke="#e6e6e6" strokeDasharray="5 5" />
     <XAxis dataKey="time" name="Time" tickFormatter={parseTime}>
     </XAxis>
     <YAxis>
     </YAxis>
-    <Tooltip />
+    <Tooltip labelFormatter={parseTime} />
   </AreaChart>
 );
