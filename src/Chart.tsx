@@ -9,12 +9,6 @@ import {
   Line,
 } from "recharts";
 
-const parseTime = (date: number) => {
-  const time = new Date(date);
-  const minutes = time.getMinutes();
-  return `${time.getHours()}:${minutes < 10 ? '0' : minutes}:${time.getSeconds()}`;
-};
-
 const tickFormatter = (date: number) => {
   const time = new Date(date);
   return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;

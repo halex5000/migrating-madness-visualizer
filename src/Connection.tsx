@@ -22,6 +22,7 @@ export default function BasicTimeline({
   const [readyStates] = useState([-1]);
   const [messageHistory, setMessageHistory] = useState<any[]>([]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [waitingForData, setWaitingForData] = useState(true);
 
   const { lastMessage, readyState } = useWebSocket(socketUrl);
 
@@ -56,6 +57,12 @@ export default function BasicTimeline({
             persist: true,
             key: "success",
             action: <Action snackbarId="success" />,
+          });
+          enqueueSnackbar("Waiting for data feed to start", {
+            variant: "info",
+            persist: true,
+            key: "waiting",
+            action: <Action snackbarId="waiting" />,
           });
           break;
         case ReadyState.UNINSTANTIATED:
